@@ -1,9 +1,13 @@
 package cmsc436.project.thermalcamera;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
 
@@ -17,6 +21,32 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		
+		// Set up the onCLick for the Gallery view
+		Button galleryButton = (Button) this.findViewById(R.id.view_gallery_button);
+		galleryButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent galleryIntent = new Intent();
+				startActivity(galleryIntent);
+			}
+			
+		});
+		
+		// Set up the onClick for the IR sensor functionality
+		Button useButton = (Button) this.findViewById(R.id.use_sensor_button);
+		useButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent useSensorIntent = new Intent();
+				startActivity(useSensorIntent);
+			}
+			
+		});
+		
+		
 		return true;
 	}
 

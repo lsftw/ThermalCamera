@@ -9,8 +9,28 @@
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TODO" />
+        android:text="@string/welcome_string"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/use_sensor_button"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/view_gallery_button"
+        android:layout_below="@+id/view_gallery_button"
+        android:layout_marginTop="20dp"
+        android:text="@string/use_sensor" />
+
+    <Button
+        android:id="@+id/view_gallery_button"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="105dp"
+        android:text="@string/view_gallery" />
 
 </RelativeLayout>
