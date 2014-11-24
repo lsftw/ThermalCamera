@@ -35,7 +35,8 @@
         android:layout_alignTop="@+id/input_prompt"
         android:layout_marginTop="22dp"
         android:ems="10"
-        android:inputType="numberSigned" />
+        android:inputType="numberSigned|numberDecimal" />
+    
 
     <Spinner
         android:id="@+id/temperature_scale_spinner"
@@ -43,5 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/user_temp_input"
         android:layout_toRightOf="@+id/user_temp_input" />
+
+    
 
 </RelativeLayout>

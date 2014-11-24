@@ -42,6 +42,8 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.input_temperature);
 		
+		//Confused? Check the docs -->  http://developer.android.com/guide/topics/resources/string-resource.html
+		
 		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.temperature_scale_spinner);
 		mAdapter = ArrayAdapter.createFromResource(this, R.array.temperture_scales, android.R.layout.simple_spinner_item);
 		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

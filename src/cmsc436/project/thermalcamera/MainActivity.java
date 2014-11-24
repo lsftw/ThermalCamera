@@ -23,18 +23,6 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		
-		// Set up the onCLick for the Gallery view
-		Button galleryButton = (Button) this.findViewById(R.id.view_gallery_button);
-		galleryButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent galleryIntent = new Intent(MainActivity.this, GalleryActivity.class);
-				startActivity(galleryIntent);
-			}
-			
-		});
-		
 		// Set up the onClick for the IR sensor functionality
 		Button useButton = (Button) this.findViewById(R.id.use_sensor_button);
 		useButton.setOnClickListener(new OnClickListener() {
@@ -43,6 +31,18 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				Intent useSensorIntent = new Intent(MainActivity.this, InputTemperatureActivity.class);
 				startActivity(useSensorIntent);
+			}
+			
+		});
+		
+		// Set up the onCLick for the Gallery view
+		Button galleryButton = (Button) this.findViewById(R.id.view_gallery_button);
+		galleryButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent galleryIntent = new Intent(MainActivity.this, GalleryActivity.class);
+				startActivity(galleryIntent);
 			}
 			
 		});
