@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import cmsc436.project.thermalcamera.gallery.GalleryActivity;
 
 public class MainActivity extends Activity {
 
