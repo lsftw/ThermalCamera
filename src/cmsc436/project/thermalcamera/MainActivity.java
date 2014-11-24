@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent galleryIntent = new Intent();
+				Intent galleryIntent = new Intent(MainActivity.this, InputTemperatureActivity.class);
 				startActivity(galleryIntent);
 			}
 			
@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent useSensorIntent = new Intent();
+				Intent useSensorIntent = new Intent(MainActivity.this, GalleryActivity.class);
 				startActivity(useSensorIntent);
 			}
 			
