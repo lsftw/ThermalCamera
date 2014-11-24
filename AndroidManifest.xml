@@ -29,6 +29,14 @@
             android:name=".gallery.GalleryActivity"
             android:label="@string/gallery_name" >
         </activity>
-    </application>
+        <activity
+            android:name=".InputTemperatureActivity"
+            android:label="@string/input_name" >
+        </activity>
+        <activity
+            android:name=".ThermalCamperaActivity"
+            android:label="@string/camera_name" >
+        </activity>
+	</application>
 
 </manifest>
