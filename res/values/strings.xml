@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">ThermalCamera</string>
-    <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
+    <string name="input_temp_prompt">Input your home temperature</string>
+    <string name="input_button_text">Start!</string>
 
 </resources>

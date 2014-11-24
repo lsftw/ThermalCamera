@@ -8,9 +8,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="56dp"
+        android:text="@string/input_button_text" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TODO" />
+        android:layout_above="@+id/button1"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_marginBottom="120dp"
+        android:text="@string/input_temp_prompt" />
 
 </RelativeLayout>
