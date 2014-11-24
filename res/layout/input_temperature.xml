@@ -9,7 +9,7 @@
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/input_start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -18,11 +18,30 @@
         android:text="@string/input_button_text" />
 
     <TextView
+        android:id="@+id/input_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_marginBottom="120dp"
+        android:layout_above="@+id/input_start_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="119dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/input_temp_prompt" />
+
+    <EditText
+        android:id="@+id/user_temp_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/input_prompt"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:inputType="numberSigned" />
+
+    <Spinner
+        android:id="@+id/temperature_scale_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/user_temp_input"
+        android:layout_toRightOf="@+id/user_temp_input" />
 
 </RelativeLayout>
