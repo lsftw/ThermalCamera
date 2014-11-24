@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">ThermalCamera</string>
+
+    <string name="gallery_name">ThermalCamera - Gallery</string>
     <string name="action_settings">Settings</string>
     
     <string name="input_temp_prompt">Input your home temperature:</string>
@@ -11,5 +13,9 @@
     	<item>°C</item>
 	</string-array>
     
-    
+    <string name="welcome_string">Welcome to the Thermal Camera</string>
+    <string name="use_sensor">Use Sensor</string>
+    <string name="view_gallery">View Gallery</string>
+
+
 </resources>
