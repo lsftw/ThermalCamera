@@ -8,6 +8,7 @@ import ioio.lib.util.android.IOIOActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // Code adapted from: http://web.media.mit.edu/~talfaro/Site/DemoIOIOThermometer.shtml
 public class TempSensingMain extends IOIOActivity {
@@ -64,11 +65,16 @@ public class TempSensingMain extends IOIOActivity {
 
 				handleTemp(receivedTemp);
 				Log.d(TAG, "RAW: "+sensortemp);
+				showToast(sensortemp + "");
 
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 			}
 		}
+	}
+
+	private void showToast(String text) {
+		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
