@@ -75,4 +75,9 @@ public class TempSensingMain extends IOIOActivity {
 	protected IOIOLooper createIOIOLooper() {
 		return new Looper();
 	}
+
+	public void handleTemp(double receivedTemp) {
+		TempCelsius.setText(receivedTemp + "");
+		TempFahrenheit.setText(receivedTemp + "");
+	}
 }
