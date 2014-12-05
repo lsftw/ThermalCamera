@@ -1,12 +1,12 @@
 package cmsc436.project.thermalcamera;
 
+import ioio.lib.api.AnalogInput;
 import ioio.lib.api.TwiMaster;
 import ioio.lib.api.exception.ConnectionLostException;
 import ioio.lib.util.BaseIOIOLooper;
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,18 +57,33 @@ public class TempSensingMain extends IOIOActivity {
 		@Override
 		public void loop() throws ConnectionLostException {
 
+			//			try {
+			//				twi.writeRead(0x5A, false, req,req.length,tempdata,tempdata.length);
+			//
+			//				receivedTemp = (double)(((tempdata[1] & 0x007f) << 8)+ tempdata[0]);
+			//				receivedTemp = (receivedTemp * tempFactor)-0.01;
+			//
+			//				handleTemp(receivedTemp);
+			//				Log.d(TAG, "RAW: "+sensortemp);
+			//				showToast(sensortemp + "");
+			//
+			//				Thread.sleep(100);
+			//			} catch (InterruptedException e) {
+			//			}
+			//		}
+
 			try {
-				twi.writeRead(0x5A, false, req,req.length,tempdata,tempdata.length);
+				ioio_.waitForConnect();
+				AnalogInput input = ioio_.openAnalogInput(40);
+				//PwmOutput pwmOutput = ioio_.openPwmOutput(12, 100); // 100Hz
 
-				receivedTemp = (double)(((tempdata[1] & 0x007f) << 8)+ tempdata[0]);
-				receivedTemp = (receivedTemp * tempFactor)-0.01;
+				float reading = input.read();
+				handleTemp(reading);
+				//pwmOutput.setPulseWidth(1000 + Math.round(1000 * reading));
 
-				handleTemp(receivedTemp);
-				Log.d(TAG, "RAW: "+sensortemp);
-				showToast(sensortemp + "");
+				Thread.sleep(1000);
+			} catch (Exception E){
 
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
 			}
 		}
 	}
