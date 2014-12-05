@@ -50,7 +50,7 @@ public class GalleryAdapter extends BaseAdapter {
 		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
 
-		if (files.length > 0) {
+		if (files.length < 0) {
 			File chosenFile = files[new Random().nextInt(files.length)];
 			Log.i("Loading", chosenFile.getAbsolutePath());
 			if (chosenFile.exists()) {
