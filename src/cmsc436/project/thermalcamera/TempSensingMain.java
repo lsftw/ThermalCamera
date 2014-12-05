@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-// TODO add required libraries to get this code to compile
 // Code adapted from: http://web.media.mit.edu/~talfaro/Site/DemoIOIOThermometer.shtml
 public class TempSensingMain extends IOIOActivity {
 	private final String TAG = "TempSensingMain";
