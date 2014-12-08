@@ -5,8 +5,8 @@ public class TemperatureUtil {
 		int extensionDot = fileName.lastIndexOf('.');
 		String fileNameNoExtension = fileName.substring(0, extensionDot);
 		String extension = fileName.substring(extensionDot + 1);
-		String newFileName = String.format("%1-P%2%3-H%4%5.%6", fileNameNoExtension, photoDegrees, photoScale.toSingleLetter(), homeDegrees, homeScale.toSingleLetter(), extension);
+		String newFileName = fileNameNoExtension + "_P" + photoDegrees + photoScale.toSingleLetter() + "-H" + homeDegrees + homeScale.toSingleLetter() + "." + extension;
 		return newFileName;
 	}
-	// TODO loadTemperaturesFromFileName
+	// TODO loadTemperaturesFromFileName <file_name>_P<temp+scale>-H<temp+scale>.<extension>
 }

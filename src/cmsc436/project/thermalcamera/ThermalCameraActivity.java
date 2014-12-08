@@ -76,7 +76,8 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 				Log.i(TAG, "rename to: " + newFileName);
 				File newFile = new File(file.getParent(), newFileName);
 				Log.i(TAG, "new file: " + newFile);
-				// TODO file.renameTo(newPath);
+				boolean result = file.renameTo(newFile);
+				Log.i(TAG, "rename success? " + result);
 
 				// TODO ask user for temperature, save temperature in filename
 				//insert temperature value (e.g. 43C or 81F) to filename
