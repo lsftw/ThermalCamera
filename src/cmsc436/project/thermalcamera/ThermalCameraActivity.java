@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,6 +42,9 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 	private ImageView imagePreview;
 	private String lastImagePath; // .getPath() from Uri
 	
+	private Button buttonSetTemp;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,7 +60,9 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		imagePreview = (ImageView) this.findViewById(R.id.camera_preview);
 
 		tempInput = (EditText) this.findViewById(R.id.photo_temp_input);
-		Button buttonSetTemp = (Button) this.findViewById(R.id.button_set_photo_temp);
+		TextWatcher inputWatcher = new InputTextWatcher();
+		tempInput.addTextChangedListener(inputWatcher);
+		buttonSetTemp = (Button) this.findViewById(R.id.button_set_photo_temp);
 		buttonSetTemp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -93,7 +100,11 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 			}
 		});
 		
+		updateButtonState();
+		
 		lastImagePath = takePicture().getPath();
+		
+		
 	}
 
 	private Uri takePicture() {
@@ -171,4 +182,26 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 	public void onNothingSelected(AdapterView<?> parent) {
 		mScale = Scales.F;
 	}
+	
+	
+	
+	
+	private class InputTextWatcher implements TextWatcher {
+		public void afterTextChanged(Editable s){
+			updateButtonState();
+		}
+		public void beforeTextChanged(CharSequence s, int start, int count, int after){
+			//unused
+		}
+		public void onTextChanged(CharSequence s, int start, int before, int count){
+			//unused
+		}
+	}
+	private void updateButtonState(){
+		//Log.i("CMSC436_TEMP", mEditTextView.getText() +", "+mEditTextView.getText().toString());
+		String input = tempInput.getText().toString();
+		boolean noGood = input.equals("") || input.equals("-") || input.equals(".") || input.equals("-.");
+		buttonSetTemp.setEnabled(!noGood);
+	}
+	
 }
