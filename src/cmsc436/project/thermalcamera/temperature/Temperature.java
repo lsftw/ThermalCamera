@@ -9,6 +9,7 @@ public class Temperature {
 		this.scale = scale;
 	}
 
+	// Pass in a String formatted like Temperature.toString()
 	public Temperature(String degreesAndScale) {
 		char lastChar = degreesAndScale.charAt(degreesAndScale.length() - 1);
 		this.degrees = degreesAndScale.substring(0, degreesAndScale.length() - 1);
