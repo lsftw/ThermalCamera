@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/delete_button"
         android:layout_centerHorizontal="true"
-        android:text="Medium Text"
+        android:text="@string/temp_missing"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Delete Photo" />
+        android:text="@string/delete_photo" />
 
 </RelativeLayout>

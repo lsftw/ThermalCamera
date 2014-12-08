@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -24,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import cmsc436.project.thermalcamera.gallery.GalleryActivity;
 import cmsc436.project.thermalcamera.gallery.GalleryAdapter;
 import cmsc436.project.thermalcamera.temperature.Scales;
 import cmsc436.project.thermalcamera.temperature.Temperature;
@@ -32,18 +35,16 @@ import cmsc436.project.thermalcamera.temperature.TemperatureUtil;
 // TODO take picture, overlay sensor data
 // Capture image intent code from http://developer.android.com/guide/topics/media/camera.html
 public class ThermalCameraActivity extends Activity implements OnItemSelectedListener {
-	private static final String TAG = "ThermalCamera";
+	public static final String TAG = "ThermalCamera";
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 111;
-	
+
 	private EditText tempInput;
 	private Scales mScale = Scales.F;
 	private ArrayAdapter<CharSequence> mAdapter;
 
 	private ImageView imagePreview;
 	private String lastImagePath; // .getPath() from Uri
-	
 	private Button buttonSetTemp;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,44 +68,90 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 			@Override
 			public void onClick(View v) {
 				// TODO don't allow if no picture taken
-				String photoTempDegrees = tempInput.getText().toString();
-				Scales photoTempScale = mScale;
-				Temperature photoTemp = new Temperature(photoTempDegrees, photoTempScale);
+				setTemperatureInFilename();
 
-				String homeTempDegrees = getIntent().getStringExtra(InputHomeTemperatureActivity.TEMPERATURE);
-				Scales homeTempScale = (Scales)getIntent().getSerializableExtra(InputHomeTemperatureActivity.SCALE);
-				Temperature homeTemp = new Temperature(homeTempDegrees, homeTempScale);
-				Log.i(TAG, "Set temp to " + photoTemp + ", home temperature is: " + homeTemp);
-
-				// ask user for temperature, save temperature in filename
-				//insert temperature value (e.g. 43C or 81F) to filename
-				//going from: 
-				//    IMG_timestamp.jpg 
-				//to: IMG_timestamp_hometemp_temperature.jpg
-				//
-				// e.g. IMG_timestamp_25C_22C.jpg
-				
-				File file = new File(lastImagePath);
-				
-				String fileName = file.getName();
-				String newFileName = TemperatureUtil.storeTemperaturesInFileName(fileName, photoTemp, homeTemp);
-				Log.i(TAG, "File: " + file + " will be renamed to: " + newFileName);
-				File newFile = new File(file.getParent(), newFileName);
-				Log.i(TAG, "New file: " + newFile);
-				boolean result = file.renameTo(newFile);
-				Log.i(TAG, "Rename success? " + result);
-				if (result) {
-					lastImagePath = newFileName;
-				}
+				promptNextAction();
 				// TODO now ask if they want to go take another picture or go to gallery?
 			}
 		});
-		
 		updateButtonState();
-		
+
 		lastImagePath = takePicture().getPath();
 		
 		
+	}
+
+	protected void setTemperatureInFilename() {
+		String photoTempDegrees = tempInput.getText().toString();
+		Scales photoTempScale = mScale;
+		Temperature photoTemp = new Temperature(photoTempDegrees, photoTempScale);
+
+		String homeTempDegrees = getIntent().getStringExtra(InputHomeTemperatureActivity.TEMPERATURE);
+		Scales homeTempScale = (Scales)getIntent().getSerializableExtra(InputHomeTemperatureActivity.SCALE);
+		Temperature homeTemp = new Temperature(homeTempDegrees, homeTempScale);
+		Log.i(TAG, "Set temp to " + photoTemp + ", home temperature is: " + homeTemp);
+
+		// ask user for temperature, save temperature in filename
+		//insert temperature value (e.g. 43C or 81F) to filename
+		//going from: 
+		//    IMG_timestamp.jpg 
+		//to: IMG_timestamp_hometemp_temperature.jpg
+		//
+		// e.g. IMG_timestamp_25C_22C.jpg
+
+		File file = new File(lastImagePath);
+
+		String fileName = file.getName();
+		String newFileName = TemperatureUtil.storeTemperaturesInFileName(fileName, photoTemp, homeTemp);
+		Log.i(TAG, "File: " + file + " will be renamed to: " + newFileName);
+		File newFile = new File(file.getParent(), newFileName);
+		Log.i(TAG, "New file: " + newFile);
+		boolean result = file.renameTo(newFile);
+		Log.i(TAG, "Rename success? " + result);
+		if (result) {
+			lastImagePath = newFileName;
+		}
+	}
+	protected void promptNextAction() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setPositiveButton("Take Another", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				lastImagePath = takePicture().getPath();
+			}
+		});
+		alert.setNegativeButton("Go to Gallery", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				Intent intent = new Intent(ThermalCameraActivity.this, GalleryActivity.class);
+				startActivity(intent);
+			}
+		});
+		alert.show();
+	}
+	protected void promptSetTemperature() {
+		// TODO make prompt to set temperature and make gui buttons to take another photo or to go to gallery
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle("Title");
+		alert.setMessage("Message");
+
+		final EditText input = new EditText(this);
+		alert.setView(input);
+		
+		alert.setPositiveButton("Set Temperature", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				Log.i(TAG, "Setting temperature data for image: " + lastImagePath);
+				// Do something with value!
+			}
+		});
+
+		alert.setNegativeButton("Discard Image", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				Log.i(TAG, "Discarding image with no temperature data: " + lastImagePath);
+				File file = new File(lastImagePath);
+				file.delete();
+			}
+		});
+
+		alert.show();
 	}
 
 	private Uri takePicture() {
@@ -159,7 +206,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 
 				// show image preview
 				updateImagePreview(lastImagePath);
-				
+
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
 			} else { // Image capture failed, advise user
@@ -171,7 +218,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 	private void updateImagePreview(String path) {
 		imagePreview.setImageBitmap(BitmapFactory.decodeFile(path));
 	}
-	
+
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		CharSequence scale = (CharSequence) parent.getItemAtPosition(position);
