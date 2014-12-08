@@ -1,7 +1,6 @@
 package cmsc436.project.thermalcamera;
 
 import java.io.File;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -71,18 +70,9 @@ public class ThermalCameraActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-			if (resultCode == RESULT_OK) {
-				// Image captured and saved to fileUri specified in the Intent
-				// TODO why is data null?
-//				for (String key : data.getExtras().keySet()) {
-//				    Object value = data.getExtras().get(key);
-//				    Log.d(TAG, String.format("%s %s (%s)", key,  
-//				        value.toString(), value.getClass().getName()));
-//				}
-//				Serializable result = data.getSerializableExtra(MediaStore.EXTRA_OUTPUT);
-//				Log.i(TAG, "Thermal image saved to:" + result);
-//				Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
-//				Log.i(TAG, "Thermal image saved to:" + data.getData());
+			if (resultCode == RESULT_OK) { // Image captured and saved to fileUri specified in the Intent
+				Log.i(TAG, "Thermal image saved to:" + getOutputImageFileUri());
+				Toast.makeText(this, "Image saved to:\n" + getOutputImageFileUri(), Toast.LENGTH_LONG).show();
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
 			} else { // Image capture failed, advise user
