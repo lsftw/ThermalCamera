@@ -48,7 +48,9 @@ public class GalleryAdapter extends BaseAdapter {
 		if (files == null) {
 			return new ArrayList<File>();
 		}
-		return Arrays.asList(files);
+		ArrayList<File> fileList = new ArrayList<File>(10);
+		fileList.addAll(Arrays.asList(files));
+		return fileList;
 	}
 
 	@Override
@@ -154,8 +156,9 @@ public class GalleryAdapter extends BaseAdapter {
 	public boolean remove(long id) {
 		for (int i = 0; i < files.size(); ++i){
 			if (files.get(i).hashCode() == id) {
-				files.get(i).delete();
-				files.remove(i);
+				File toRemove = files.remove(i);
+				toRemove.delete();
+				
 				this.notifyDataSetChanged();
 				return true;
 			}
