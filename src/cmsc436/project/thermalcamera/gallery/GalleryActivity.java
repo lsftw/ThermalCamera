@@ -13,12 +13,12 @@ import android.widget.GridView;
 import cmsc436.project.thermalcamera.R;
 import cmsc436.project.thermalcamera.ThermalPhotoActivity;
 
-// TODO view gallery of saved thermal camera pictures
-//startActivity(new Intent(this, GalleryActivity.class));
 
 public class GalleryActivity extends Activity {
 
 	public final static String PHOTO_PATH = "PHOTO_PATH";
+	public final static String PHOTO_ID = "PHOTO_ID";
+	public final static Integer REQUEST_CODE = 436;
 
 	private GalleryAdapter mAdapter;
 	
@@ -40,7 +40,8 @@ public class GalleryActivity extends Activity {
 					
 					Intent intent = new Intent(GalleryActivity.this, ThermalPhotoActivity.class);
 					intent.putExtra(PHOTO_PATH, tag.toString());
-					startActivity(intent);
+					intent.putExtra(PHOTO_ID, id);
+					startActivityForResult(intent, REQUEST_CODE);
 				}
 			}
 		});
@@ -66,4 +67,13 @@ public class GalleryActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+			mAdapter.remove(data.getLongExtra(PHOTO_ID, -1));
+		}
+
+	}
+	
 }

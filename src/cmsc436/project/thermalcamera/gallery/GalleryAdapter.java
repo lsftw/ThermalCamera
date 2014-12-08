@@ -2,6 +2,9 @@ package cmsc436.project.thermalcamera.gallery;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,7 +26,7 @@ public class GalleryAdapter extends BaseAdapter {
 	public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "thermalcamera";
 
 	private Context context;
-	private File[] files = new File[0];
+	private List<File> files = new ArrayList<File>(5);
 
 	public GalleryAdapter(Context context) {
 		this.context = context;
@@ -34,7 +37,7 @@ public class GalleryAdapter extends BaseAdapter {
 		}
 	}
 
-	private File[] getAllFiles() {
+	private List<File> getAllFiles() {
 		File dir = new File(APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String filename) {
@@ -43,9 +46,9 @@ public class GalleryAdapter extends BaseAdapter {
 			}
 		});
 		if (files == null) {
-			return new File[0];
+			return new ArrayList<File>();
 		}
-		return files;
+		return Arrays.asList(files);
 	}
 
 	@Override
@@ -55,9 +58,9 @@ public class GalleryAdapter extends BaseAdapter {
 		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 		//		imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
 
-		if (files.length > 0) {
+		if (files.size() > 0) {
 			//			File chosenFile = files[new Random().nextInt(files.length)];
-			File chosenFile = files[position];
+			File chosenFile = files.get(position);
 			Log.i("Loading", chosenFile.getAbsolutePath());
 			if (chosenFile.exists()) {
 				Log.i("Loading", "file exists");
@@ -131,21 +134,33 @@ public class GalleryAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		if (files.length == 0) { // TODO remove debug
-			return 13;
-		}
-		return files.length;
+//		if (files.size() == 0) { // TODO remove debug
+//			return 413;
+//		}
+		return files.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return files[position];
+		return files.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return 0;
+		//using hashcode of filepath for id
+		return files.get(position).hashCode();
+	}
+	
+	public boolean remove(long id) {
+		for (int i = 0; i < files.size(); ++i){
+			if (files.get(i).hashCode() == id) {
+				files.get(i).delete();
+				files.remove(i);
+				this.notifyDataSetChanged();
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	//Deletes all files/photos and updates files to be an empty array
@@ -153,7 +168,7 @@ public class GalleryAdapter extends BaseAdapter {
 		for (File f : files){
 			f.delete();
 		}
-		files = new File[0];
+		files.clear();
 		this.notifyDataSetChanged();
 	}
 }
