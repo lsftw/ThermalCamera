@@ -46,7 +46,7 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 				Intent startCameraActivity = new Intent(InputTemperatureActivity.this, ThermalCameraActivity.class);
 				
 				//If they entered a home temperature, passes that value and temperature scale chosen
-				EditText temperatureInput = (EditText) findViewById(R.id.user_temp_input);
+				EditText temperatureInput = (EditText) findViewById(R.id.photo_temp_input);
 				String temperatureString = temperatureInput.getText().toString();
 				if (null == temperatureString || "".equals(temperatureString)){
 					//TODO handle how we do this.. pass an N/A?

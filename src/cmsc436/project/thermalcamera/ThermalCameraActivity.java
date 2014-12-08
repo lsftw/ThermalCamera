@@ -9,15 +9,17 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 	private static final String TAG = "ThermalCamera";
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 111;
 	
+	private EditText tempInput;
 	private Scales mScale = Scales.F;
 	private ArrayAdapter<CharSequence> mAdapter;
 
@@ -41,7 +44,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		setContentView(R.layout.activity_camera);
 
 		// Setting up spinner
-		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.temperature_scale_spinner2);
+		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.photo_temp_scale);
 		mAdapter = ArrayAdapter.createFromResource(this, R.array.temperture_scales, android.R.layout.simple_spinner_item);
 		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		temperatureSpinner.setAdapter(mAdapter);
@@ -49,7 +52,24 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 
 		imagePreview = (ImageView) this.findViewById(R.id.camera_preview);
 
-		// TODO get user's home temperature from intent
+		tempInput = (EditText) this.findViewById(R.id.photo_temp_input);
+		Button buttonSetTemp = (Button) this.findViewById(R.id.button_set_photo_temp);
+		buttonSetTemp.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String temperature = tempInput.getText().toString();
+				String homeTemperature = null; // TODO get user's home temperature from intent
+				Log.i(TAG, "Set temp to " + temperature + mScale + ", home temperature is: " + homeTemperature);
+
+				// TODO ask user for temperature, save temperature in filename
+				//insert temperature value (e.g. 43C or 81F) to filename
+				//going from: 
+				//    IMG_timestamp.jpg 
+				//to: IMG_timestamp_hometemp_temperature.jpg
+				//
+				// e.g. IMG_timestamp_25C_22C.jpg
+			}
+		});
 		
 		lastImageUri = takePicture();
 	}
@@ -103,36 +123,25 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 			if (resultCode == RESULT_OK) { // Image captured and saved to fileUri specified in the Intent
 				Log.i(TAG, "Thermal image saved to:" + lastImageUri);
 				Toast.makeText(this, "Image saved to:\n" + lastImageUri, Toast.LENGTH_LONG).show();
-				
-				
-				
-				
-				
-				// TODO ask user for temperature, save temperature in filename
-				//insert temperature value (e.g. 43C or 81F) to filename
-				//going from: 
-				//    IMG_timestamp.jpg 
-				//to: IMG_timestamp_hometemp_temperature.jpg
-				//
-				// e.g. IMG_timestamp_25C_22C.jpg
 
-				
-				//TODO Steven - also get the preview of image/picture just taken to work 
-				// (code doesn't go right here though)
-				try {
-					imagePreview.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), lastImageUri));
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
+				// show image preview
+				updateImagePreview(lastImageUri);
 				
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
 			} else { // Image capture failed, advise user
 				Toast.makeText(this, "Image capture failed.", Toast.LENGTH_LONG).show();
 			}
+		}
+	}
+
+	private void updateImagePreview(Uri uri) {
+		try {
+			imagePreview.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
