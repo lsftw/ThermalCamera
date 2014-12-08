@@ -27,5 +27,7 @@
  	<string name="delete_all_string">Delete All Photos</string>
     
  	<string name="set_temp">Set Temp</string>
+    <string name="temp_missing">No Temperature Data</string>
+    <string name="delete_photo">Delete Photo</string>
 
 </resources>
