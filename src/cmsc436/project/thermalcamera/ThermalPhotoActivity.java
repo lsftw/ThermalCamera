@@ -1,6 +1,7 @@
 package cmsc436.project.thermalcamera;
 
 import cmsc436.project.thermalcamera.gallery.GalleryActivity;
+import cmsc436.project.thermalcamera.gallery.GalleryAdapter;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ public class ThermalPhotoActivity extends Activity {
 		String photoPath = getIntent().getExtras().getString(GalleryActivity.PHOTO_PATH); 
 		
 		ImageView imageView = (ImageView) findViewById(R.id.thermal_photo);
-		imageView.setImageBitmap(BitmapFactory.decodeFile(photoPath));//file.getAbsolutePath()););
+		imageView.setImageBitmap(BitmapFactory.decodeFile(photoPath));
 	}
 
 }
