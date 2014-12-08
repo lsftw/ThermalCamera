@@ -35,6 +35,7 @@ public class GalleryActivity extends Activity {
 					
 					Intent intent = new Intent(GalleryActivity.this, ThermalPhotoActivity.class);
 					intent.putExtra(PHOTO_PATH, tag.toString());
+					startActivity(intent);
 				}
 			}
 		});
