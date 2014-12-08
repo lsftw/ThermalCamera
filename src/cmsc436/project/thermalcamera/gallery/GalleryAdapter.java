@@ -18,10 +18,11 @@ import android.widget.ImageView;
 
 // Adapter for a gallery of images
 public class GalleryAdapter extends BaseAdapter {
-	private static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/thermalcamera";
+	// Where thermal camera images are saved & loaded
+	public static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "thermalcamera";
+
 	private Context context;
-	private File[] files = new File[0]; // TODO load elsewhere?
-	// TODO scrolling
+	private File[] files = new File[0];
 
 	public GalleryAdapter(Context context) {
 		this.context = context;
