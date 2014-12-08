@@ -21,6 +21,8 @@
     <string name="welcome_string">Welcome to the Thermal Camera</string>
     <string name="use_sensor">Use Sensor</string>
     <string name="view_gallery">View Gallery</string>
+
+    <string name="camera_preview">Camera preview</string>
     
  	<string name="delete_all_string">Delete All Photos</string>
     

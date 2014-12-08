@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import cmsc436.project.thermalcamera.gallery.GalleryActivity;
 
+// View a specific photo, returning requested deletes to thermal camera
 public class ThermalPhotoActivity extends Activity {
 
 	@Override
@@ -24,9 +25,10 @@ public class ThermalPhotoActivity extends Activity {
 		
 		ImageView imageView = (ImageView) findViewById(R.id.thermal_photo);
 		imageView.setImageBitmap(BitmapFactory.decodeFile(photoPath));
+		// TODO display temperature from filename if present
 		
 		Button deleteButton = (Button) findViewById(R.id.delete_button);
-		deleteButton.setOnClickListener(new OnClickListener(){
+		deleteButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

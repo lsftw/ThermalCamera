@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+// TODO show this activity AFTER user is finished taking photos
 public class InputTemperatureActivity extends Activity implements OnItemSelectedListener {
 
 	public final String TEMPERATURE = "Temperature";

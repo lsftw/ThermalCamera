@@ -3,6 +3,7 @@ package cmsc436.project.thermalcamera;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,7 +39,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		Uri fileUri = getOutputImageFileUri(); // create a file to save the image
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
-		
+		// TODO get user's home temperature from intent
 		// Setting up spinner
 		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.temperature_scale_spinner2);
 		mAdapter = ArrayAdapter.createFromResource(this, R.array.temperture_scales, android.R.layout.simple_spinner_item);
@@ -75,7 +76,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		}
 
 		// Create a media file name
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
 		File mediaFile = new File(mediaStorageDir.getPath() + File.separator +
 				"IMG_"+ timeStamp + ".jpg");
 
@@ -121,7 +122,6 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		CharSequence scale = (CharSequence) parent.getItemAtPosition(position);
 		mScale = scale.equals("°F") ? Scales.F : Scales.C;
 	}
-
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
