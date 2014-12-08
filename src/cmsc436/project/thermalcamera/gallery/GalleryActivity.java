@@ -2,6 +2,10 @@ package cmsc436.project.thermalcamera.gallery;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import cmsc436.project.thermalcamera.R;
 
@@ -17,5 +21,15 @@ public class GalleryActivity extends Activity {
 		GridView gridView = (GridView) findViewById(R.id.gridView1);
 		GalleryAdapter adapter = new GalleryAdapter(this);
 		gridView.setAdapter(adapter);
+
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Object tag = view.getTag();
+				if (tag != null) {
+					Log.d("ViewImage", tag.toString());
+					// TODO open detailed view
+				}
+			}
+		});
 	}
 }
