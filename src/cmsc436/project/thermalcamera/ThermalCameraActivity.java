@@ -108,7 +108,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setPositiveButton("Take Another", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				takePicture();
+				lastImagePath = takePicture().getPath();
 			}
 		});
 		alert.setNegativeButton("Go to Gallery", new DialogInterface.OnClickListener() {
