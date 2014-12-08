@@ -66,26 +66,28 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 				String homeTempDegrees = getIntent().getStringExtra(InputHomeTemperatureActivity.TEMPERATURE);
 				Scales homeTempScale = (Scales)getIntent().getSerializableExtra(InputHomeTemperatureActivity.SCALE);
 				Log.i(TAG, "Set temp to " + photoTempDegrees + photoTempScale + ", home temperature is: " + homeTempDegrees + homeTempScale);
-				
-				File file = new File(lastImagePath);
-				Log.i(TAG, "file: " + file + " exists? " + file.exists());
-				Log.i(TAG, "file parent: " + file.getParent());
-				
-				String fileName = file.getName();
-				String newFileName = TemperatureUtil.storeTemperaturesInFileName(fileName, photoTempDegrees, photoTempScale, homeTempDegrees, homeTempScale);
-				Log.i(TAG, "rename to: " + newFileName);
-				File newFile = new File(file.getParent(), newFileName);
-				Log.i(TAG, "new file: " + newFile);
-				boolean result = file.renameTo(newFile);
-				Log.i(TAG, "rename success? " + result);
 
-				// TODO ask user for temperature, save temperature in filename
+				// ask user for temperature, save temperature in filename
 				//insert temperature value (e.g. 43C or 81F) to filename
 				//going from: 
 				//    IMG_timestamp.jpg 
 				//to: IMG_timestamp_hometemp_temperature.jpg
 				//
 				// e.g. IMG_timestamp_25C_22C.jpg
+				
+				File file = new File(lastImagePath);
+				
+				String fileName = file.getName();
+				String newFileName = TemperatureUtil.storeTemperaturesInFileName(fileName, photoTempDegrees, photoTempScale, homeTempDegrees, homeTempScale);
+				Log.i(TAG, "File: " + file + " will be renamed to: " + newFileName);
+				File newFile = new File(file.getParent(), newFileName);
+				Log.i(TAG, "New file: " + newFile);
+				boolean result = file.renameTo(newFile);
+				Log.i(TAG, "Rename success? " + result);
+				if (result) {
+					lastImagePath = newFileName;
+				}
+				// TODO now ask if they want to go take another picture or go to gallery?
 			}
 		});
 		
