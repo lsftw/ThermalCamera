@@ -1,14 +1,19 @@
 package cmsc436.project.thermalcamera;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import cmsc436.project.thermalcamera.gallery.GalleryActivity;
+import cmsc436.project.thermalcamera.temperature.Temperature;
+import cmsc436.project.thermalcamera.temperature.TemperatureUtil;
 
 // View a specific photo, returning requested deletes to thermal camera
 public class ThermalPhotoActivity extends Activity {
@@ -25,7 +30,8 @@ public class ThermalPhotoActivity extends Activity {
 		
 		ImageView imageView = (ImageView) findViewById(R.id.thermal_photo);
 		imageView.setImageBitmap(BitmapFactory.decodeFile(photoPath));
-		// TODO display temperature from filename if present
+
+		displayTemperature(photoPath);
 		
 		Button deleteButton = (Button) findViewById(R.id.delete_button);
 		deleteButton.setOnClickListener(new OnClickListener() {
@@ -43,4 +49,14 @@ public class ThermalPhotoActivity extends Activity {
 		});
 	}
 
+	private void displayTemperature(String photoPath) {
+		// TODO display temperature from filename if present
+		String fileName = new File(photoPath).getName();
+		Temperature[] temperatures = TemperatureUtil.loadTemperaturesFromFileName(fileName);
+		if (temperatures != null) {
+			Temperature photoTemp = temperatures[0];
+			Temperature homeTemp = temperatures[1];
+			Log.i(ThermalCameraActivity.TAG, photoTemp + "," + homeTemp);
+		}
+	}
 }

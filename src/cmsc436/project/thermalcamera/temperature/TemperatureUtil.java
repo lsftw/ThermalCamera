@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 
 // <file_name>_P<temp+scale>-H<temp+scale>.<extension>
 public class TemperatureUtil {
-	public static final String RGX_NUM = "^(-?\\d*\\.?\\d*)$"; // signed decimal number
-	public static final Pattern REGEX_TEMPERATURE_FILE_NAME = Pattern.compile(".+_P(" + RGX_NUM + ")-H(" + RGX_NUM + ")\\..+");
+	public static final String RGX_NUM = "-?\\d*\\.?\\d*"; // signed decimal number
+	public static final Pattern REGEX_TEMPERATURE_FILE_NAME = Pattern.compile(".+_P(" + RGX_NUM + "[FC])-H(" + RGX_NUM + "[FC])\\..+");
 
 	public static String storeTemperaturesInFileName(String fileName, Temperature photoTemp, Temperature homeTemp) {
 		int extensionDot = fileName.lastIndexOf('.');

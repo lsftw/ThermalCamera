@@ -30,7 +30,7 @@ import cmsc436.project.thermalcamera.temperature.TemperatureUtil;
 // TODO take picture, overlay sensor data
 // Capture image intent code from http://developer.android.com/guide/topics/media/camera.html
 public class ThermalCameraActivity extends Activity implements OnItemSelectedListener {
-	private static final String TAG = "ThermalCamera";
+	public static final String TAG = "ThermalCamera";
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 111;
 	
 	private EditText tempInput;
