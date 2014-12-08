@@ -10,15 +10,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 import cmsc436.project.thermalcamera.gallery.GalleryAdapter;
 
 // TODO take picture, overlay sensor data
 // Capture image intent code from http://developer.android.com/guide/topics/media/camera.html
-public class ThermalCameraActivity extends Activity {
+public class ThermalCameraActivity extends Activity implements OnItemSelectedListener {
 	private static final String TAG = "ThermalCamera";
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 111;
-
+	
+	private Scales mScale = Scales.FAHRENHEIT;
+	private ArrayAdapter<CharSequence> mAdapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,6 +38,14 @@ public class ThermalCameraActivity extends Activity {
 		Uri fileUri = getOutputImageFileUri(); // create a file to save the image
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
+		
+		// Setting up spinner
+		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.temperature_scale_spinner);
+		mAdapter = ArrayAdapter.createFromResource(this, R.array.temperture_scales, android.R.layout.simple_spinner_item);
+		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		temperatureSpinner.setAdapter(mAdapter);
+		temperatureSpinner.setOnItemSelectedListener(this); //overriding OnItemSelectedListener methods to use 'this'
+		
 		// start the image capture Intent
 		Log.i(TAG, "Starting intent to capture image.");
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
@@ -73,12 +89,38 @@ public class ThermalCameraActivity extends Activity {
 			if (resultCode == RESULT_OK) { // Image captured and saved to fileUri specified in the Intent
 				Log.i(TAG, "Thermal image saved to:" + getOutputImageFileUri());
 				Toast.makeText(this, "Image saved to:\n" + getOutputImageFileUri(), Toast.LENGTH_LONG).show();
+				
+				
+				
+				
+				
 				// TODO ask user for temperature, save temperature in filename
+				//insert temperature value (e.g. 43C or 81F) to filename
+				//resulting filename should be: IMG_timestamp_temperature.jpg
+				
+				//TODO maybe set up 2 buttons:  one for save Temp + photo
+				// 								one for don't save photo
+				
+				
+				
+				
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
 			} else { // Image capture failed, advise user
 				Toast.makeText(this, "Image capture failed.", Toast.LENGTH_LONG).show();
 			}
 		}
+	}
+	
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		CharSequence scale = (CharSequence) parent.getItemAtPosition(position);
+		mScale = Scales.valueOf(scale.toString());
+	}
+
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		mScale = Scales.FAHRENHEIT;
 	}
 }

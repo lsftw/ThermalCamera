@@ -24,5 +24,6 @@
     
  	<string name="delete_all_string">Delete All Photos</string>
     
+ 	<string name="set_temp">Set Temp</string>
 
 </resources>

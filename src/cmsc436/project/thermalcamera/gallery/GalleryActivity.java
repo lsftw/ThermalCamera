@@ -14,8 +14,14 @@ import cmsc436.project.thermalcamera.R;
 import cmsc436.project.thermalcamera.ThermalPhotoActivity;
 
 
+
 public class GalleryActivity extends Activity {
 
+	//NOTE: for local emulator testing:
+	// 1. open DDMS view
+	// 2. Storage --> sdcard --> (if necessary new folder named:) thermalcamera
+	// 3. drag images into thermalcamera folder
+	
 	public final static String PHOTO_PATH = "PHOTO_PATH";
 	public final static String PHOTO_ID = "PHOTO_ID";
 	public final static Integer REQUEST_CODE = 436;

@@ -17,22 +17,7 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 	public final String TEMPERATURE = "Temperature";
 	public final String SCALE = "Scale";
 	
-	public enum Scales{
-		FAHRENHEIT("°F"),
-		CELSIUS("°C");
-		
-		private String symbol;
-		
-		private Scales(String symbol){
-			this.symbol = symbol;
-		}
-		
-		public String toString(){
-			return symbol;
-		}
-	}
-	
-	private Scales mScale;
+	private Scales mScale = Scales.FAHRENHEIT;
 	
 	private ArrayAdapter<CharSequence> mAdapter;
 
@@ -42,7 +27,7 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.input_temperature);
 		
-		//Confused? Check the docs -->  http://developer.android.com/guide/topics/resources/string-resource.html
+		//Spinners!  http://developer.android.com/guide/topics/resources/string-resource.html
 		
 		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.temperature_scale_spinner);
 		mAdapter = ArrayAdapter.createFromResource(this, R.array.temperture_scales, android.R.layout.simple_spinner_item);
@@ -78,9 +63,9 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		//TODO MAKE SURE THIS IS CORRECT!!!!
 		CharSequence scale = (CharSequence) parent.getItemAtPosition(position);
-		mScale = scale.toString().equals(Scales.FAHRENHEIT.toString()) ? Scales.FAHRENHEIT : Scales.CELSIUS;
+		mScale = Scales.valueOf(scale.toString());
+
 	}
 
 
