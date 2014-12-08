@@ -3,9 +3,9 @@
     tools:context="cmsc436.project.thermalcamera.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/option_delete_all"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/delete_all_string"/>
 
 </menu>

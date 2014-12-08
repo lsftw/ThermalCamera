@@ -1,11 +1,10 @@
 package cmsc436.project.thermalcamera;
 
-import cmsc436.project.thermalcamera.gallery.GalleryActivity;
-import cmsc436.project.thermalcamera.gallery.GalleryAdapter;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
+import cmsc436.project.thermalcamera.gallery.GalleryActivity;
 
 public class ThermalPhotoActivity extends Activity {
 

@@ -147,4 +147,13 @@ public class GalleryAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	//Deletes all files/photos and updates files to be an empty array
+	public void clear() {
+		for (File f : files){
+			f.delete();
+		}
+		files = new File[0];
+		this.notifyDataSetChanged();
+	}
 }

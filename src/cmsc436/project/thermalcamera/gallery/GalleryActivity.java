@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -13,9 +15,12 @@ import cmsc436.project.thermalcamera.ThermalPhotoActivity;
 
 // TODO view gallery of saved thermal camera pictures
 //startActivity(new Intent(this, GalleryActivity.class));
+
 public class GalleryActivity extends Activity {
 
 	public final static String PHOTO_PATH = "PHOTO_PATH";
+
+	private GalleryAdapter mAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +28,8 @@ public class GalleryActivity extends Activity {
 		setContentView(R.layout.activity_gallery);
 
 		GridView gridView = (GridView) findViewById(R.id.gridView1);
-		GalleryAdapter adapter = new GalleryAdapter(this);
-		gridView.setAdapter(adapter);
+		mAdapter = new GalleryAdapter(this);
+		gridView.setAdapter(mAdapter);
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -39,5 +44,26 @@ public class GalleryActivity extends Activity {
 				}
 			}
 		});
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.delete_all, menu);
+		
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.option_delete_all) {
+			mAdapter.clear();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
