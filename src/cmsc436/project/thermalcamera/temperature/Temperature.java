@@ -9,6 +9,12 @@ public class Temperature {
 		this.scale = scale;
 	}
 
+	public Temperature(String degreesAndScale) {
+		char lastChar = degreesAndScale.charAt(degreesAndScale.length() - 1);
+		this.degrees = degreesAndScale.substring(0, degreesAndScale.length() - 1);
+		this.scale = Scales.valueOf(lastChar + "");
+	}
+
 	public String getDegrees() {
 		return degrees;
 	}
