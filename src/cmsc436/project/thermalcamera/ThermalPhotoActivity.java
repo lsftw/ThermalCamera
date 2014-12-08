@@ -1,5 +1,6 @@
 package cmsc436.project.thermalcamera;
 
+import cmsc436.project.thermalcamera.gallery.GalleryActivity;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,10 +13,11 @@ public class ThermalPhotoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photo);
 		
-		//getIntent().getExtras();
+		//Assumes this extras will never be null
+		String photoPath = getIntent().getExtras().getString(GalleryActivity.PHOTO_PATH); 
 		
 		ImageView imageView = (ImageView) findViewById(R.id.thermal_photo);
-		//imageView.setImageBitmap(BitmapFactory.decodeFile(chosenFile.getAbsolutePath()););
+		imageView.setImageBitmap(BitmapFactory.decodeFile(photoPath));//file.getAbsolutePath()););
 	}
 
 }
