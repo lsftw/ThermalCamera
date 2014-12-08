@@ -1,21 +1,25 @@
 package cmsc436.project.thermalcamera;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import cmsc436.project.thermalcamera.gallery.GalleryAdapter;
 
@@ -27,29 +31,38 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 	
 	private Scales mScale = Scales.F;
 	private ArrayAdapter<CharSequence> mAdapter;
+
+	private ImageView imagePreview;
+	private Uri lastImageUri;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera);
 
-		// create Intent to take a picture and return control to the calling application
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-		Uri fileUri = getOutputImageFileUri(); // create a file to save the image
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
-
-		// TODO get user's home temperature from intent
 		// Setting up spinner
 		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.temperature_scale_spinner2);
 		mAdapter = ArrayAdapter.createFromResource(this, R.array.temperture_scales, android.R.layout.simple_spinner_item);
 		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		temperatureSpinner.setAdapter(mAdapter);
 		temperatureSpinner.setOnItemSelectedListener(this); //overriding OnItemSelectedListener methods to use 'this'
+
+		imagePreview = (ImageView) this.findViewById(R.id.camera_preview);
+
+		// TODO get user's home temperature from intent
 		
+		lastImageUri = takePicture();
+	}
+
+	private Uri takePicture() {
+		// create Intent to take a picture and return control to the calling application
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		Uri fileUri = getOutputImageFileUri(); // create a file to save the image
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 		// start the image capture Intent
 		Log.i(TAG, "Starting intent to capture image.");
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+		return fileUri;
 	}
 
 	// Create a file Uri for saving an image or video
@@ -88,8 +101,8 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) { // Image captured and saved to fileUri specified in the Intent
-				Log.i(TAG, "Thermal image saved to:" + getOutputImageFileUri());
-				Toast.makeText(this, "Image saved to:\n" + getOutputImageFileUri(), Toast.LENGTH_LONG).show();
+				Log.i(TAG, "Thermal image saved to:" + lastImageUri);
+				Toast.makeText(this, "Image saved to:\n" + lastImageUri, Toast.LENGTH_LONG).show();
 				
 				
 				
@@ -106,7 +119,13 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 				
 				//TODO Steven - also get the preview of image/picture just taken to work 
 				// (code doesn't go right here though)
-				
+				try {
+					imagePreview.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), lastImageUri));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				
 				
 			} else if (resultCode == RESULT_CANCELED) {
