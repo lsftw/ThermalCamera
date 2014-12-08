@@ -1,5 +1,6 @@
 package cmsc436.project.thermalcamera;
 
+import cmsc436.project.thermalcamera.temperature.Scales;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

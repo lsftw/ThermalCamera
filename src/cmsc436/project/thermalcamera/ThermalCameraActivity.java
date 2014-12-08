@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import cmsc436.project.thermalcamera.gallery.GalleryAdapter;
+import cmsc436.project.thermalcamera.temperature.Scales;
+import cmsc436.project.thermalcamera.temperature.TemperatureUtil;
 
 // TODO take picture, overlay sensor data
 // Capture image intent code from http://developer.android.com/guide/topics/media/camera.html
@@ -36,7 +39,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 	private ArrayAdapter<CharSequence> mAdapter;
 
 	private ImageView imagePreview;
-	private Uri lastImageUri;
+	private String lastImagePath; // .getPath() from Uri
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +67,16 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 				Scales homeTempScale = (Scales)getIntent().getSerializableExtra(InputHomeTemperatureActivity.SCALE);
 				Log.i(TAG, "Set temp to " + photoTempDegrees + photoTempScale + ", home temperature is: " + homeTempDegrees + homeTempScale);
 				
-				File file = new File(lastImageUri.toString());
-				Log.i(TAG, "file: " + file);
-				Log.i(TAG, "file: " + file.exists());
+				File file = new File(lastImagePath);
+				Log.i(TAG, "file: " + file + " exists? " + file.exists());
+				Log.i(TAG, "file parent: " + file.getParent());
+				
+				String fileName = file.getName();
+				String newFileName = TemperatureUtil.storeTemperaturesInFileName(fileName, photoTempDegrees, photoTempScale, homeTempDegrees, homeTempScale);
+				Log.i(TAG, "rename to: " + newFileName);
+				File newFile = new File(file.getParent(), newFileName);
+				Log.i(TAG, "new file: " + newFile);
+				// TODO file.renameTo(newPath);
 
 				// TODO ask user for temperature, save temperature in filename
 				//insert temperature value (e.g. 43C or 81F) to filename
@@ -78,7 +88,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 			}
 		});
 		
-		lastImageUri = takePicture();
+		lastImagePath = takePicture().getPath();
 	}
 
 	private Uri takePicture() {
@@ -128,11 +138,11 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) { // Image captured and saved to fileUri specified in the Intent
-				Log.i(TAG, "Thermal image saved to:" + lastImageUri);
-				Toast.makeText(this, "Image saved to:\n" + lastImageUri, Toast.LENGTH_LONG).show();
+				Log.i(TAG, "Thermal image saved to:" + lastImagePath);
+				Toast.makeText(this, "Image saved to:\n" + lastImagePath, Toast.LENGTH_LONG).show();
 
 				// show image preview
-				updateImagePreview(lastImageUri);
+				updateImagePreview(lastImagePath);
 				
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
@@ -142,14 +152,8 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		}
 	}
 
-	private void updateImagePreview(Uri uri) {
-		try {
-			imagePreview.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void updateImagePreview(String path) {
+		imagePreview.setImageBitmap(BitmapFactory.decodeFile(path));
 	}
 	
 	@Override
