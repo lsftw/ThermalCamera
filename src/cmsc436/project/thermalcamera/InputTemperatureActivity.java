@@ -11,13 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class InputTemperatureActivity extends Activity implements OnItemSelectedListener {
 
 	public final String TEMPERATURE = "Temperature";
 	public final String SCALE = "Scale";
 	
-	private Scales mScale = Scales.FAHRENHEIT;
+	private Scales mScale = Scales.F;
 	
 	private ArrayAdapter<CharSequence> mAdapter;
 
@@ -64,7 +65,9 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		CharSequence scale = (CharSequence) parent.getItemAtPosition(position);
-		mScale = Scales.valueOf(scale.toString());
+		//Toast.makeText(this, scale, Toast.LENGTH_LONG).show();
+		mScale = scale.equals("°F") ? Scales.F : Scales.C;
+		//mScale = Scales.valueOf(scale.toString()); //doesn't work
 
 	}
 
@@ -72,7 +75,7 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 		// TODO Make sure this works
-		mScale = Scales.FAHRENHEIT;
+		mScale = Scales.F;
 	}
 	
 

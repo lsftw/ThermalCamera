@@ -1,8 +1,8 @@
 package cmsc436.project.thermalcamera;
 
 public enum Scales {
-	FAHRENHEIT("°F"),
-	CELSIUS("°C");
+	F("°F"), //Fahrenheit
+	C("°C"); //Celsius
 	
 	private String symbol;
 	

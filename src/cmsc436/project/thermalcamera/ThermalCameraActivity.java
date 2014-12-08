@@ -24,7 +24,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 	private static final String TAG = "ThermalCamera";
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 111;
 	
-	private Scales mScale = Scales.FAHRENHEIT;
+	private Scales mScale = Scales.F;
 	private ArrayAdapter<CharSequence> mAdapter;
 	
 	@Override
@@ -97,10 +97,8 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 				// TODO ask user for temperature, save temperature in filename
 				//insert temperature value (e.g. 43C or 81F) to filename
 				//resulting filename should be: IMG_timestamp_temperature.jpg
-				
-				//TODO maybe set up 2 buttons:  one for save Temp + photo
-				// 								one for don't save photo
-				
+
+				//TODO Steven - also get the preview of image/picture just taken to work
 				
 				
 				
@@ -115,12 +113,12 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		CharSequence scale = (CharSequence) parent.getItemAtPosition(position);
-		mScale = Scales.valueOf(scale.toString());
+		mScale = scale.equals("°F") ? Scales.F : Scales.C;
 	}
 
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		mScale = Scales.FAHRENHEIT;
+		mScale = Scales.F;
 	}
 }
