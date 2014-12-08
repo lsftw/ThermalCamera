@@ -73,6 +73,7 @@ public class ThermalCameraActivity extends Activity {
 			if (resultCode == RESULT_OK) { // Image captured and saved to fileUri specified in the Intent
 				Log.i(TAG, "Thermal image saved to:" + getOutputImageFileUri());
 				Toast.makeText(this, "Image saved to:\n" + getOutputImageFileUri(), Toast.LENGTH_LONG).show();
+				// TODO ask user for temperature, save temperature in filename
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
 			} else { // Image capture failed, advise user

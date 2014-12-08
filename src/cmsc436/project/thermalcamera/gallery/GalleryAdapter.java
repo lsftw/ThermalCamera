@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-// TODO causes crash when no images
+// TODO what happens when no images?
 // Adapter for a gallery of images
 public class GalleryAdapter extends BaseAdapter {
 	// Where thermal camera images are saved & loaded
@@ -53,15 +53,15 @@ public class GalleryAdapter extends BaseAdapter {
 		//		return super.getView(position, convertView, parent);
 		ImageView imageView = new ImageView(context);
 		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-//		imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
+		//		imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
 
 		if (files.length > 0) {
-//			File chosenFile = files[new Random().nextInt(files.length)];
+			//			File chosenFile = files[new Random().nextInt(files.length)];
 			File chosenFile = files[position];
 			Log.i("Loading", chosenFile.getAbsolutePath());
 			if (chosenFile.exists()) {
 				Log.i("Loading", "file exists");
-				Bitmap imageBitmap = BitmapFactory.decodeFile(chosenFile.getAbsolutePath());
+				Bitmap imageBitmap = loadImagePreview(chosenFile);
 				imageView.setImageBitmap(imageBitmap);
 				return imageView;
 			}
@@ -73,6 +73,41 @@ public class GalleryAdapter extends BaseAdapter {
 		}
 
 		return imageView;
+	}
+
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
+	}
+	private Bitmap loadImagePreview(File chosenFile) { // scale image down first to reduce memory usage
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(chosenFile.getAbsolutePath(), options);
+
+		// Calculate inSampleSize
+		// TODO what sizes?
+		options.inSampleSize = calculateInSampleSize(options, 100, 100);
+
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeFile(chosenFile.getAbsolutePath(), options);
 	}
 
 	private Bitmap generatePlaceHolderImage() {
