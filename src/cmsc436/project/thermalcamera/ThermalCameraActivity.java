@@ -1,6 +1,7 @@
 package cmsc436.project.thermalcamera;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,17 +11,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 import cmsc436.project.thermalcamera.gallery.GalleryAdapter;
 
 // TODO take picture, overlay sensor data
 // Capture image intent code from http://developer.android.com/guide/topics/media/camera.html
 public class ThermalCameraActivity extends Activity {
-	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	private static final String TAG = "ThermalCamera";
+	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 111;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main); // TODO different layout
+		setContentView(R.layout.activity_camera);
 
 		// create Intent to take a picture and return control to the calling application
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -29,7 +32,7 @@ public class ThermalCameraActivity extends Activity {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
 		// start the image capture Intent
-		Log.i("ThermalCamera", "Starting intent to capture image.");
+		Log.i(TAG, "Starting intent to capture image.");
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 
@@ -51,7 +54,7 @@ public class ThermalCameraActivity extends Activity {
 		// Create the storage directory if it does not exist
 		if (!mediaStorageDir.exists()) {
 			if (!mediaStorageDir.mkdirs()) {
-				Log.d("ThermalCamera", "failed to create directory");
+				Log.d(TAG, "failed to create directory");
 				return null;
 			}
 		}
@@ -62,5 +65,29 @@ public class ThermalCameraActivity extends Activity {
 				"IMG_"+ timeStamp + ".jpg");
 
 		return mediaFile;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				// Image captured and saved to fileUri specified in the Intent
+				// TODO why is data null?
+//				for (String key : data.getExtras().keySet()) {
+//				    Object value = data.getExtras().get(key);
+//				    Log.d(TAG, String.format("%s %s (%s)", key,  
+//				        value.toString(), value.getClass().getName()));
+//				}
+//				Serializable result = data.getSerializableExtra(MediaStore.EXTRA_OUTPUT);
+//				Log.i(TAG, "Thermal image saved to:" + result);
+//				Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
+//				Log.i(TAG, "Thermal image saved to:" + data.getData());
+			} else if (resultCode == RESULT_CANCELED) {
+				// User cancelled the image capture
+			} else { // Image capture failed, advise user
+				Toast.makeText(this, "Image capture failed.", Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 }

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+// TODO causes crash when no images
 // Adapter for a gallery of images
 public class GalleryAdapter extends BaseAdapter {
 	// Where thermal camera images are saved & loaded
