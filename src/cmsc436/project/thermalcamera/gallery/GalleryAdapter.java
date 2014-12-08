@@ -2,7 +2,6 @@ package cmsc436.project.thermalcamera.gallery;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,19 +14,19 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 // Adapter for a gallery of images
 public class GalleryAdapter extends BaseAdapter {
-	private static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+	private static final String APP_FILEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/thermalcamera";
 	private Context context;
-	private File[] files; // TODO load elsewhere?
+	private File[] files = new File[0]; // TODO load elsewhere?
 	// TODO scrolling
 
 	public GalleryAdapter(Context context) {
 		this.context = context;
 		this.files = getAllFiles();
+		Log.d("ListFiles", "Looking for images in " + APP_FILEPATH);
 		for (File file : files) {
 			Log.d("ListFiles", "Image File: " + file.getName());
 		}
@@ -37,9 +36,13 @@ public class GalleryAdapter extends BaseAdapter {
 		File dir = new File(APP_FILEPATH);
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String filename) {
-				return filename.endsWith(".png");
+				return filename.endsWith(".png") || filename.endsWith(".jpg")
+						|| filename.endsWith(".gif") || filename.endsWith(".jpeg");
 			}
 		});
+		if (files == null) {
+			return new File[0];
+		}
 		return files;
 	}
 
@@ -47,11 +50,12 @@ public class GalleryAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		//		return super.getView(position, convertView, parent);
 		ImageView imageView = new ImageView(context);
-		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-		imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
+		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//		imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
 
-		if (files.length < 0) {
-			File chosenFile = files[new Random().nextInt(files.length)];
+		if (files.length > 0) {
+//			File chosenFile = files[new Random().nextInt(files.length)];
+			File chosenFile = files[position];
 			Log.i("Loading", chosenFile.getAbsolutePath());
 			if (chosenFile.exists()) {
 				Log.i("Loading", "file exists");
@@ -89,14 +93,15 @@ public class GalleryAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		return 13;
+		if (files.length == 0) { // TODO remove debug
+			return 13;
+		}
+		return files.length;
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return null;
+		return files[position];
 	}
 
 	@Override
