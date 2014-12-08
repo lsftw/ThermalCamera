@@ -63,6 +63,7 @@ public class GalleryAdapter extends BaseAdapter {
 				Log.i("Loading", "file exists");
 				Bitmap imageBitmap = loadImagePreview(chosenFile);
 				imageView.setImageBitmap(imageBitmap);
+				imageView.setTag(chosenFile); // save url in tag for onClick()
 				return imageView;
 			}
 		} else {
