@@ -40,7 +40,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 
 		
 		// Setting up spinner
-		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.temperature_scale_spinner);
+		Spinner temperatureSpinner = (Spinner) this.findViewById(R.id.temperature_scale_spinner2);
 		mAdapter = ArrayAdapter.createFromResource(this, R.array.temperture_scales, android.R.layout.simple_spinner_item);
 		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		temperatureSpinner.setAdapter(mAdapter);
@@ -96,9 +96,15 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 				
 				// TODO ask user for temperature, save temperature in filename
 				//insert temperature value (e.g. 43C or 81F) to filename
-				//resulting filename should be: IMG_timestamp_temperature.jpg
+				//going from: 
+				//    IMG_timestamp.jpg 
+				//to: IMG_timestamp_hometemp_temperature.jpg
+				//
+				// e.g. IMG_timestamp_25C_22C.jpg
 
-				//TODO Steven - also get the preview of image/picture just taken to work
+				
+				//TODO Steven - also get the preview of image/picture just taken to work 
+				// (code doesn't go right here though)
 				
 				
 				
