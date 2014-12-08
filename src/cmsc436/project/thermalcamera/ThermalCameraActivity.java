@@ -1,8 +1,6 @@
 package cmsc436.project.thermalcamera;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -26,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import cmsc436.project.thermalcamera.gallery.GalleryAdapter;
 import cmsc436.project.thermalcamera.temperature.Scales;
+import cmsc436.project.thermalcamera.temperature.Temperature;
 import cmsc436.project.thermalcamera.temperature.TemperatureUtil;
 
 // TODO take picture, overlay sensor data
@@ -63,9 +62,12 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 				// TODO don't allow if no picture taken
 				String photoTempDegrees = tempInput.getText().toString();
 				Scales photoTempScale = mScale;
+				Temperature photoTemp = new Temperature(photoTempDegrees, photoTempScale);
+
 				String homeTempDegrees = getIntent().getStringExtra(InputHomeTemperatureActivity.TEMPERATURE);
 				Scales homeTempScale = (Scales)getIntent().getSerializableExtra(InputHomeTemperatureActivity.SCALE);
-				Log.i(TAG, "Set temp to " + photoTempDegrees + photoTempScale + ", home temperature is: " + homeTempDegrees + homeTempScale);
+				Temperature homeTemp = new Temperature(homeTempDegrees, homeTempScale);
+				Log.i(TAG, "Set temp to " + photoTemp + ", home temperature is: " + homeTemp);
 
 				// ask user for temperature, save temperature in filename
 				//insert temperature value (e.g. 43C or 81F) to filename
@@ -78,7 +80,7 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 				File file = new File(lastImagePath);
 				
 				String fileName = file.getName();
-				String newFileName = TemperatureUtil.storeTemperaturesInFileName(fileName, photoTempDegrees, photoTempScale, homeTempDegrees, homeTempScale);
+				String newFileName = TemperatureUtil.storeTemperaturesInFileName(fileName, photoTemp, homeTemp);
 				Log.i(TAG, "File: " + file + " will be renamed to: " + newFileName);
 				File newFile = new File(file.getParent(), newFileName);
 				Log.i(TAG, "New file: " + newFile);
