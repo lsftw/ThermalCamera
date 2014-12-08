@@ -1,12 +1,12 @@
 package cmsc436.project.thermalcamera;
 
-import ioio.lib.api.AnalogInput;
 import ioio.lib.api.TwiMaster;
 import ioio.lib.api.exception.ConnectionLostException;
 import ioio.lib.util.BaseIOIOLooper;
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +19,7 @@ public class TempSensingMain extends IOIOActivity {
 	double sensortemp;
 
 	//Sensor data process
-	byte[] req = new byte[] { 0x07 };//Byte address to ask for sensor data
+	byte[] req = new byte[] { 0x05 };//Byte address to ask for sensor data
 	byte[] tempdata = new byte[2];   //Byte to save sensor data
 	double receivedTemp = 0x0000;    //Value after processing sensor data
 	double tempFactor = 0.02;        //0.02 degrees per LSB 
@@ -38,13 +38,16 @@ public class TempSensingMain extends IOIOActivity {
 
 		TempCelsius = (TextView) findViewById(R.id.tempC);
 		TempFahrenheit = (TextView) findViewById(R.id.tempF);
+		TempFahrenheit.setText("oncreate done");
 	}
 
 	class Looper extends BaseIOIOLooper {
 		//Here we initialize 'twi' as an I2C port
 		@Override
 		protected void setup() throws ConnectionLostException {
+			TempFahrenheit.setText("setup");
 			twi = ioio_.openTwiMaster(0, TwiMaster.Rate.RATE_100KHz, true);
+			TempFahrenheit.setText("setup done");
 
 		}
 
@@ -57,35 +60,36 @@ public class TempSensingMain extends IOIOActivity {
 		@Override
 		public void loop() throws ConnectionLostException {
 
-			//			try {
-			//				twi.writeRead(0x5A, false, req,req.length,tempdata,tempdata.length);
-			//
-			//				receivedTemp = (double)(((tempdata[1] & 0x007f) << 8)+ tempdata[0]);
-			//				receivedTemp = (receivedTemp * tempFactor)-0.01;
-			//
-			//				handleTemp(receivedTemp);
-			//				Log.d(TAG, "RAW: "+sensortemp);
-			//				showToast(sensortemp + "");
-			//
-			//				Thread.sleep(100);
-			//			} catch (InterruptedException e) {
-			//			}
-			//		}
+			TempFahrenheit.setText("loop");
+						try {
+							twi.writeRead(0x5A, false, req,req.length,tempdata,tempdata.length);
+			
+							receivedTemp = (double)(((tempdata[1] & 0x007f) << 8)+ tempdata[0]);
+							receivedTemp = (receivedTemp * tempFactor)-0.01;
+			
+							handleTemp(receivedTemp);
+							Log.d(TAG, "RAW: "+sensortemp);
+							showToast(sensortemp + "");
+			
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+						}
+					}
 
-			try {
-				ioio_.waitForConnect();
-				AnalogInput input = ioio_.openAnalogInput(40);
-				//PwmOutput pwmOutput = ioio_.openPwmOutput(12, 100); // 100Hz
-
-				float reading = input.read();
-				handleTemp(reading);
-				//pwmOutput.setPulseWidth(1000 + Math.round(1000 * reading));
-
-				Thread.sleep(1000);
-			} catch (Exception E){
-
-			}
-		}
+//			try {
+//				ioio_.waitForConnect();
+//				AnalogInput input = ioio_.openAnalogInput(40);
+//				//PwmOutput pwmOutput = ioio_.openPwmOutput(12, 100); // 100Hz
+//
+//				float reading = input.read();
+//				handleTemp(reading);
+//				//pwmOutput.setPulseWidth(1000 + Math.round(1000 * reading));
+//
+//				Thread.sleep(1000);
+//			} catch (Exception E){
+//				showToast(E.toString());
+//			}
+//		}
 	}
 
 	private void showToast(String text) {
@@ -94,11 +98,12 @@ public class TempSensingMain extends IOIOActivity {
 
 	@Override
 	protected IOIOLooper createIOIOLooper() {
+		TempFahrenheit.setText("setup done");
 		return new Looper();
 	}
 
 	public void handleTemp(double receivedTemp) {
 		TempCelsius.setText(receivedTemp + "");
-		TempFahrenheit.setText(receivedTemp + "");
+//		TempFahrenheit.setText(receivedTemp + "");
 	}
 }

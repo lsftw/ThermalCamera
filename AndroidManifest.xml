@@ -34,7 +34,7 @@
             android:label="@string/input_name" >
         </activity>
         <activity
-            android:name=".ThermalCamperaActivity"
+            android:name=".ThermalCameraActivity"
             android:label="@string/camera_name" >
         </activity>
         <activity
