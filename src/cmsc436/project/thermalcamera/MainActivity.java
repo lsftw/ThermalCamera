@@ -29,7 +29,8 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent useSensorIntent = new Intent(MainActivity.this, TempSensingMain.class);
+//				Intent useSensorIntent = new Intent(MainActivity.this, TempSensingMain.class);
+				Intent useSensorIntent = new Intent(MainActivity.this, InputTemperatureActivity.class);
 				startActivity(useSensorIntent);
 			}
 			

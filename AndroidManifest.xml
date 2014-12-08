@@ -8,8 +8,12 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="18" />
 
+	<uses-permission android:name="android.permission.CAMERA" />
+	<!-- Save & Load camera pictures -->
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+	<uses-feature android:name="android.hardware.camera" />
  
     <application
         android:allowBackup="true"
@@ -34,7 +38,7 @@
             android:label="@string/input_name" >
         </activity>
         <activity
-            android:name=".ThermalCamperaActivity"
+            android:name=".ThermalCameraActivity"
             android:label="@string/camera_name" >
         </activity>
         <activity
