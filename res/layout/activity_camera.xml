@@ -14,7 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignBottom="@+id/photo_temp_input"
+
+        android:layout_above="@+id/photo_temp_input"
         android:contentDescription="@string/camera_preview"
         android:src="@drawable/ic_launcher" />
 
