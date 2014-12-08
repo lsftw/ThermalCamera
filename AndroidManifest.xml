@@ -42,6 +42,10 @@
             android:label="@string/camera_name" >
         </activity>
         <activity
+            android:name=".ThermalPhotoActivity"
+            android:label="@string/image_name" >
+        </activity>
+        <activity
             android:name=".TempSensingMain"
             android:label="tempsensingmain" >
         </activity>
