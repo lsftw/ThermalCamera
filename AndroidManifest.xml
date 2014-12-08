@@ -34,7 +34,7 @@
             android:label="@string/gallery_name" >
         </activity>
         <activity
-            android:name=".InputTemperatureActivity"
+            android:name=".InputHomeTemperatureActivity"
             android:label="@string/input_name" >
         </activity>
         <activity

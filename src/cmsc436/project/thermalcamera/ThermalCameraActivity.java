@@ -57,9 +57,16 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		buttonSetTemp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String temperature = tempInput.getText().toString();
-				String homeTemperature = null; // TODO get user's home temperature from intent
-				Log.i(TAG, "Set temp to " + temperature + mScale + ", home temperature is: " + homeTemperature);
+				// TODO don't allow if no picture taken
+				String photoTempDegrees = tempInput.getText().toString();
+				Scales photoTempScale = mScale;
+				String homeTempDegrees = getIntent().getStringExtra(InputHomeTemperatureActivity.TEMPERATURE);
+				Scales homeTempScale = (Scales)getIntent().getSerializableExtra(InputHomeTemperatureActivity.SCALE);
+				Log.i(TAG, "Set temp to " + photoTempDegrees + photoTempScale + ", home temperature is: " + homeTempDegrees + homeTempScale);
+				
+				File file = new File(lastImageUri.toString());
+				Log.i(TAG, "file: " + file);
+				Log.i(TAG, "file: " + file.exists());
 
 				// TODO ask user for temperature, save temperature in filename
 				//insert temperature value (e.g. 43C or 81F) to filename

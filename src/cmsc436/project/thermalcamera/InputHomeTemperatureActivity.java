@@ -13,10 +13,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 // TODO show this activity AFTER user is finished taking photos
-public class InputTemperatureActivity extends Activity implements OnItemSelectedListener {
+// Input home temperature
+public class InputHomeTemperatureActivity extends Activity implements OnItemSelectedListener {
 
-	public final String TEMPERATURE = "Temperature";
-	public final String SCALE = "Scale";
+	public static final String TEMPERATURE = "Temperature";
+	public static final String SCALE = "Scale";
 	
 	private Scales mScale = Scales.F;
 	
@@ -26,7 +27,7 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.input_temperature);
+		setContentView(R.layout.input_home_temperature);
 		
 		//Spinners!  http://developer.android.com/guide/topics/resources/string-resource.html
 		
@@ -43,13 +44,14 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 
 			@Override
 			public void onClick(View v) {
-				Intent startCameraActivity = new Intent(InputTemperatureActivity.this, ThermalCameraActivity.class);
+				Intent startCameraActivity = new Intent(InputHomeTemperatureActivity.this, ThermalCameraActivity.class);
 				
 				//If they entered a home temperature, passes that value and temperature scale chosen
 				EditText temperatureInput = (EditText) findViewById(R.id.photo_temp_input);
 				String temperatureString = temperatureInput.getText().toString();
 				if (null == temperatureString || "".equals(temperatureString)){
 					//TODO handle how we do this.. pass an N/A?
+					// TODO toast an error and don't start activity. better yet: disable the button until temp entered
 					temperatureString = "Not Entered";
 				}
 				startCameraActivity.putExtra(TEMPERATURE, temperatureString);
