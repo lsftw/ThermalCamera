@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import cmsc436.project.thermalcamera.gallery.GalleryActivity;
 import cmsc436.project.thermalcamera.temperature.Temperature;
 import cmsc436.project.thermalcamera.temperature.TemperatureUtil;
 
 // View a specific photo, returning requested deletes to thermal camera
 public class ThermalPhotoActivity extends Activity {
+	private TextView temperatureText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public class ThermalPhotoActivity extends Activity {
 		Intent intent =  getIntent();
 		final String photoPath = intent.getStringExtra(GalleryActivity.PHOTO_PATH); 
 		final long photoID = intent.getLongExtra(GalleryActivity.PHOTO_ID, -1);
+
+		temperatureText = (TextView) findViewById(R.id.temperature_value);
 		
 		ImageView imageView = (ImageView) findViewById(R.id.thermal_photo);
 		imageView.setImageBitmap(BitmapFactory.decodeFile(photoPath));
@@ -50,13 +54,12 @@ public class ThermalPhotoActivity extends Activity {
 	}
 
 	private void displayTemperature(String photoPath) {
-		// TODO display temperature from filename if present
 		String fileName = new File(photoPath).getName();
 		Temperature[] temperatures = TemperatureUtil.loadTemperaturesFromFileName(fileName);
 		if (temperatures != null) {
 			Temperature photoTemp = temperatures[0];
 			Temperature homeTemp = temperatures[1];
-			Log.i(ThermalCameraActivity.TAG, photoTemp + "," + homeTemp);
+			temperatureText.setText("PhotoTemp: " + photoTemp + ", HomeTemp:" + homeTemp);
 		}
 	}
 }
