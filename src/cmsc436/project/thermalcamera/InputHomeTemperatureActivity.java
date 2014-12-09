@@ -3,6 +3,8 @@ package cmsc436.project.thermalcamera;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -11,22 +13,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import cmsc436.project.thermalcamera.temperature.Scales;
 
-// TODO show this activity AFTER user is finished taking photos
-public class InputTemperatureActivity extends Activity implements OnItemSelectedListener {
+// Input home temperature
+public class InputHomeTemperatureActivity extends Activity implements OnItemSelectedListener {
 
-	public final String TEMPERATURE = "Temperature";
-	public final String SCALE = "Scale";
+	public static final String TEMPERATURE = "Temperature";
+	public static final String SCALE = "Scale";
 	
 	private Scales mScale = Scales.F;
 	
 	private ArrayAdapter<CharSequence> mAdapter;
-
+	private EditText mEditTextView;
+	private Button mStartButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.input_temperature);
+		setContentView(R.layout.input_home_temperature);
 		
 		//Spinners!  http://developer.android.com/guide/topics/resources/string-resource.html
 		
@@ -37,19 +41,23 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 		temperatureSpinner.setAdapter(mAdapter);
 		temperatureSpinner.setOnItemSelectedListener(this); //overriding OnItemSelectedListener methods to use 'this'
 		
+		//Setting up watcher to gray out submit button if input temperature is emtpy
+		TextWatcher textWatcher = new InputTextWatcher();
+		mEditTextView = (EditText) findViewById(R.id.photo_temp_input);
+		mEditTextView.addTextChangedListener(textWatcher);
 		
-		Button startButton = (Button) this.findViewById(R.id.input_start_button);
-		startButton.setOnClickListener(new OnClickListener() {
+		mStartButton = (Button) this.findViewById(R.id.input_start_button);
+		mStartButton.setEnabled(false);
+		mStartButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent startCameraActivity = new Intent(InputTemperatureActivity.this, ThermalCameraActivity.class);
+				Intent startCameraActivity = new Intent(InputHomeTemperatureActivity.this, ThermalCameraActivity.class);
 				
 				//If they entered a home temperature, passes that value and temperature scale chosen
-				EditText temperatureInput = (EditText) findViewById(R.id.user_temp_input);
+				EditText temperatureInput = (EditText) findViewById(R.id.photo_temp_input);
 				String temperatureString = temperatureInput.getText().toString();
 				if (null == temperatureString || "".equals(temperatureString)){
-					//TODO handle how we do this.. pass an N/A?
 					temperatureString = "Not Entered";
 				}
 				startCameraActivity.putExtra(TEMPERATURE, temperatureString);
@@ -59,9 +67,33 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 			}
 			
 		});
+		
+		
+		updateButtonState();
 	}
 
 
+	// Guided by: http://stackoverflow.com/questions/5888156/how-do-you-gray-out-a-submit-button-when-specific-edittext-boxes-are-empty
+	private class InputTextWatcher implements TextWatcher {
+		public void afterTextChanged(Editable s){
+			updateButtonState();
+		}
+		public void beforeTextChanged(CharSequence s, int start, int count, int after){
+			//unused
+		}
+		public void onTextChanged(CharSequence s, int start, int before, int count){
+			//unused
+		}
+	}
+	
+	//NOTE: Must be called AFTER both mStartButton and mEditTextView are defined in onCreate()
+	private void updateButtonState(){
+		//Log.i("CMSC436_TEMP", mEditTextView.getText() +", "+mEditTextView.getText().toString());
+		String input = mEditTextView.getText().toString();
+		boolean noGood = input.equals("") || input.equals("-") || input.equals(".") || input.equals("-.");
+		mStartButton.setEnabled(!noGood);
+	}
+	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		CharSequence scale = (CharSequence) parent.getItemAtPosition(position);
@@ -74,9 +106,6 @@ public class InputTemperatureActivity extends Activity implements OnItemSelected
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Make sure this works
 		mScale = Scales.F;
 	}
-	
-
 }

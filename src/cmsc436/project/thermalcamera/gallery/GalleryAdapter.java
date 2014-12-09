@@ -53,6 +53,12 @@ public class GalleryAdapter extends BaseAdapter {
 		return fileList;
 	}
 
+	// Costly! Call this when file list was changed by another activity.
+	public void reloadFiles() {
+		this.files = getAllFiles();
+		this.notifyDataSetChanged();
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		//		return super.getView(position, convertView, parent);
@@ -136,9 +142,6 @@ public class GalleryAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-//		if (files.size() == 0) { // TODO remove debug
-//			return 413;
-//		}
 		return files.size();
 	}
 
