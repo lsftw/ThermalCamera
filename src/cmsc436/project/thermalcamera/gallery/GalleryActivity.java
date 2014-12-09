@@ -52,7 +52,14 @@ public class GalleryActivity extends Activity {
 			}
 		});
 	}
-	
+
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    Log.i("OnResume", "onResume() reload files in gallery");
+	    mAdapter.reloadFiles();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
