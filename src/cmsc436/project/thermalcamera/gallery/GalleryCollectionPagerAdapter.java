@@ -6,15 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import android.graphics.AvoidXfermode;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -126,49 +119,27 @@ public class GalleryCollectionPagerAdapter extends FragmentStatePagerAdapter {
 		private void displayPhoto(View rootView) {
 			ImageView imageView = ((ImageView) rootView.findViewById(R.id.thermal_photo));
 			imageView.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
-			// TODO uncomment when out of memory issues fixed
-//			Bitmap overlaidPhoto = putGradientOverlay(file.getPath());
-//			imageView.setImageBitmap(overlaidPhoto);
+
+			int overlayColor = getOverlayColor(file.getPath());
+			if (overlayColor > -1) {
+				imageView.setColorFilter(overlayColor);
+			}
 		}
 
-		private Bitmap putGradientOverlay(String photoPath) {
-			Bitmap img = BitmapFactory.decodeFile(photoPath);
+		private int getOverlayColor(String photoPath) {
 			String fileName = new File(photoPath).getName();
 			Temperature[] temperatures = TemperatureUtil.loadTemperaturesFromFileName(fileName);
 			if (temperatures != null) {
 				Temperature photoTemp = temperatures[0];
 				Temperature homeTemp = temperatures[1];
-				int overlayColor;
 				if (homeTemp.compareTo(photoTemp) < 0){
-					//home temp is cooler than photo temp, make photo RED
-					overlayColor = Color.RED;
+					//home temp is cooler than photo temp, make photo overly red
+					return Color.argb(127, 255, 127, 0);
 				} else if (homeTemp.compareTo(photoTemp) > 0){
-					overlayColor = Color.BLUE;
-				} else { 
-					return img;
-				}
-				
-				//overlay guided by: http://stackoverflow.com/questions/11968040/imageview-colorfilter-on-non-tranparent-pixels-clip
-				final Paint p = new Paint();
-				
-				final Bitmap bm1 = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Config.ARGB_8888);
-				Canvas c = new Canvas(bm1);
-				
-				p.setColorFilter(new PorterDuffColorFilter(overlayColor, PorterDuff.Mode.OVERLAY));
-				c.drawBitmap(img, 0, 0, p);
-				
-				final Bitmap bm2 = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Config.ARGB_8888);
-				c = new Canvas(bm2);
-				p.setColorFilter(new PorterDuffColorFilter(overlayColor, PorterDuff.Mode.SRC_ATOP));
-				c.drawBitmap(img, 0, 0, p);
-				
-				p.setColorFilter(null);
-				p.setXfermode(new AvoidXfermode(overlayColor, 0, AvoidXfermode.Mode.TARGET));
-		        c.drawBitmap(bm1, 0, 0, p);
-		        
-		    	return bm2;
-			} 
-			return img; 
+					return Color.argb(127, 0, 127, 255);
+				} 
+			}
+			return -1;
 		}
 
 		private void displayTemperature(View rootView, String photoPath) {
