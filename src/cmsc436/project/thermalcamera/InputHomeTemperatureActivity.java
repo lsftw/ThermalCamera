@@ -1,12 +1,10 @@
 package cmsc436.project.thermalcamera;
 
-import cmsc436.project.thermalcamera.temperature.Scales;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -15,9 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
+import cmsc436.project.thermalcamera.temperature.Scales;
 
-// TODO show this activity AFTER user is finished taking photos
 // Input home temperature
 public class InputHomeTemperatureActivity extends Activity implements OnItemSelectedListener {
 
@@ -61,8 +58,6 @@ public class InputHomeTemperatureActivity extends Activity implements OnItemSele
 				EditText temperatureInput = (EditText) findViewById(R.id.photo_temp_input);
 				String temperatureString = temperatureInput.getText().toString();
 				if (null == temperatureString || "".equals(temperatureString)){
-					//TODO handle how we do this.. pass an N/A?
-					// TODO toast an error and don't start activity. better yet: disable the button until temp entered
 					temperatureString = "Not Entered";
 				}
 				startCameraActivity.putExtra(TEMPERATURE, temperatureString);
@@ -111,9 +106,6 @@ public class InputHomeTemperatureActivity extends Activity implements OnItemSele
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Make sure this works
 		mScale = Scales.F;
 	}
-	
-
 }
