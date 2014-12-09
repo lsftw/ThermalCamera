@@ -42,7 +42,6 @@ public class GalleryActivity extends Activity {
 				Object tag = view.getTag();
 				if (tag != null) {
 					Log.d("ViewImage", tag.toString());
-					// TODO open new detailed image view
 					
 					Intent intent = new Intent(GalleryActivity.this, ThermalPhotoActivity.class);
 //					intent.putExtra(PHOTO_PATH, tag.toString());

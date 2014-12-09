@@ -32,7 +32,6 @@ import cmsc436.project.thermalcamera.temperature.Scales;
 import cmsc436.project.thermalcamera.temperature.Temperature;
 import cmsc436.project.thermalcamera.temperature.TemperatureUtil;
 
-// TODO take picture, overlay sensor data
 // Capture image intent code from http://developer.android.com/guide/topics/media/camera.html
 public class ThermalCameraActivity extends Activity implements OnItemSelectedListener {
 	public static final String TAG = "ThermalCamera";
@@ -67,11 +66,9 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		buttonSetTemp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO don't allow if no picture taken
 				setTemperatureInFilename();
 
 				promptNextAction();
-				// TODO now ask if they want to go take another picture or go to gallery?
 			}
 		});
 		updateButtonState();
@@ -127,32 +124,33 @@ public class ThermalCameraActivity extends Activity implements OnItemSelectedLis
 		});
 		alert.show();
 	}
-	protected void promptSetTemperature() {
-		// TODO make prompt to set temperature and make gui buttons to take another photo or to go to gallery
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setTitle("Title");
-		alert.setMessage("Message");
-
-		final EditText input = new EditText(this);
-		alert.setView(input);
-		
-		alert.setPositiveButton("Set Temperature", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				Log.i(TAG, "Setting temperature data for image: " + lastImagePath);
-				// Do something with value!
-			}
-		});
-
-		alert.setNegativeButton("Discard Image", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				Log.i(TAG, "Discarding image with no temperature data: " + lastImagePath);
-				File file = new File(lastImagePath);
-				file.delete();
-			}
-		});
-
-		alert.show();
-	}
+	
+	
+//	protected void promptSetTemperature() {
+//		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//		alert.setTitle("Title");
+//		alert.setMessage("Message");
+//
+//		final EditText input = new EditText(this);
+//		alert.setView(input);
+//		
+//		alert.setPositiveButton("Set Temperature", new DialogInterface.OnClickListener() {
+//			public void onClick(DialogInterface dialog, int whichButton) {
+//				Log.i(TAG, "Setting temperature data for image: " + lastImagePath);
+//				// Do something with value!
+//			}
+//		});
+//
+//		alert.setNegativeButton("Discard Image", new DialogInterface.OnClickListener() {
+//			public void onClick(DialogInterface dialog, int whichButton) {
+//				Log.i(TAG, "Discarding image with no temperature data: " + lastImagePath);
+//				File file = new File(lastImagePath);
+//				file.delete();
+//			}
+//		});
+//
+//		alert.show();
+//	}
 
 	private Uri takePicture() {
 		// create Intent to take a picture and return control to the calling application

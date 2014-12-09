@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-// TODO what happens when no images?
 // Adapter for a gallery of images
 public class GalleryAdapter extends BaseAdapter {
 	// Where thermal camera images are saved & loaded
@@ -114,7 +113,6 @@ public class GalleryAdapter extends BaseAdapter {
 		BitmapFactory.decodeFile(chosenFile.getAbsolutePath(), options);
 
 		// Calculate inSampleSize
-		// TODO what sizes?
 		options.inSampleSize = calculateInSampleSize(options, 100, 100);
 
 		// Decode bitmap with inSampleSize set
