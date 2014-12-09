@@ -8,13 +8,13 @@ import java.util.List;
 
 import android.graphics.AvoidXfermode;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;

@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import cmsc436.project.thermalcamera.R;
 
-public class NewThermalPhotoActivity extends FragmentActivity {
+public class ThermalPhotoActivity extends FragmentActivity {
 	private GalleryCollectionPagerAdapter mDemoCollectionPagerAdapter;
 	private ViewPager mViewPager;
 

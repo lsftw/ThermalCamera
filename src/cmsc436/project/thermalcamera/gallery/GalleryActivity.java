@@ -44,7 +44,7 @@ public class GalleryActivity extends Activity {
 					Log.d("ViewImage", tag.toString());
 					// TODO open new detailed image view
 					
-					Intent intent = new Intent(GalleryActivity.this, NewThermalPhotoActivity.class);
+					Intent intent = new Intent(GalleryActivity.this, ThermalPhotoActivity.class);
 //					intent.putExtra(PHOTO_PATH, tag.toString());
 					intent.putExtra(PHOTO_POSITION, position);
 					startActivityForResult(intent, REQUEST_CODE);
