@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import cmsc436.project.thermalcamera.R;
-import cmsc436.project.thermalcamera.ThermalPhotoActivity;
 
 
 
@@ -24,6 +23,7 @@ public class GalleryActivity extends Activity {
 	
 	public final static String PHOTO_PATH = "PHOTO_PATH";
 	public final static String PHOTO_ID = "PHOTO_ID";
+	public final static String PHOTO_POSITION = "PHOTO_POSITION";
 	public final static Integer REQUEST_CODE = 436;
 
 	private GalleryAdapter mAdapter;
@@ -42,17 +42,24 @@ public class GalleryActivity extends Activity {
 				Object tag = view.getTag();
 				if (tag != null) {
 					Log.d("ViewImage", tag.toString());
-					// TODO open detailed view
+					// TODO open new detailed image view
 					
 					Intent intent = new Intent(GalleryActivity.this, ThermalPhotoActivity.class);
-					intent.putExtra(PHOTO_PATH, tag.toString());
-					intent.putExtra(PHOTO_ID, id);
+//					intent.putExtra(PHOTO_PATH, tag.toString());
+					intent.putExtra(PHOTO_POSITION, position);
 					startActivityForResult(intent, REQUEST_CODE);
 				}
 			}
 		});
 	}
-	
+
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    Log.i("OnResume", "onResume() reload files in gallery");
+	    mAdapter.reloadFiles();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

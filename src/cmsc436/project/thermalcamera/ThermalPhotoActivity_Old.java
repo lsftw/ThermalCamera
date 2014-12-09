@@ -17,7 +17,7 @@ import cmsc436.project.thermalcamera.temperature.Temperature;
 import cmsc436.project.thermalcamera.temperature.TemperatureUtil;
 
 // View a specific photo, returning requested deletes to thermal camera
-public class ThermalPhotoActivity extends Activity {
+public class ThermalPhotoActivity_Old extends Activity {
 	private TextView temperatureText;
 
 	@Override
@@ -51,7 +51,7 @@ public class ThermalPhotoActivity extends Activity {
 				Intent intent = new Intent();
 				intent.putExtra(GalleryActivity.PHOTO_PATH, photoPath);
 				intent.putExtra(GalleryActivity.PHOTO_ID, photoID);
-				ThermalPhotoActivity.this.setResult(RESULT_OK, intent);
+				ThermalPhotoActivity_Old.this.setResult(RESULT_OK, intent);
 				
 				finish();
 			}
