@@ -5,13 +5,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import cmsc436.project.thermalcamera.R;
 
+// Scrollable detailed image view
 public class ThermalPhotoActivity extends FragmentActivity {
 	private GalleryCollectionPagerAdapter mDemoCollectionPagerAdapter;
 	private ViewPager mViewPager;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_collection_demo);
+		setContentView(R.layout.activity_gallery_pager);
 
 		mDemoCollectionPagerAdapter = new GalleryCollectionPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);

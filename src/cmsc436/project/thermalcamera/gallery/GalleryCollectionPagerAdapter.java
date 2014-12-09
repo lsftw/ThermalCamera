@@ -60,13 +60,13 @@ public class GalleryCollectionPagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int i) {
-		Fragment fragment = new DemoObjectFragment(this, files.get(i));
+		Fragment fragment = new GalleryImageFragment(this, files.get(i));
 		return fragment;
 	}
 
 	// Allows delete to change view
     public int getItemPosition(Object item) {
-    	DemoObjectFragment fragment = (DemoObjectFragment)item;
+    	GalleryImageFragment fragment = (GalleryImageFragment)item;
         int position = files.indexOf(fragment.getFile());
 
         if (position >= 0) {
@@ -92,13 +92,11 @@ public class GalleryCollectionPagerAdapter extends FragmentStatePagerAdapter {
 		return (position + 1) + "";
 	}
 
-	// Instances of this class are fragments representing a single
-	// object in our collection.
-	public static class DemoObjectFragment extends Fragment {
+	public static class GalleryImageFragment extends Fragment {
 		private GalleryCollectionPagerAdapter adapter; // used to delete
 		private File file;
 
-		public DemoObjectFragment(GalleryCollectionPagerAdapter adapter, File file) {
+		public GalleryImageFragment(GalleryCollectionPagerAdapter adapter, File file) {
 			this.adapter = adapter;
 			this.file = file;
 		}
