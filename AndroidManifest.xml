@@ -34,6 +34,10 @@
             android:label="@string/gallery_name" >
         </activity>
         <activity
+            android:name=".gallery.NewThermalPhotoActivity"
+            android:label="@string/image_name" >
+        </activity>
+        <activity
             android:name=".InputHomeTemperatureActivity"
             android:label="@string/input_name" >
         </activity>

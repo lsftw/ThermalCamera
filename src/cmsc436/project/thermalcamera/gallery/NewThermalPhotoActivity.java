@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import cmsc436.project.thermalcamera.R;
 
-public class GalleryCollectionDemoActivity extends FragmentActivity {
+public class NewThermalPhotoActivity extends FragmentActivity {
 	private GalleryCollectionPagerAdapter mDemoCollectionPagerAdapter;
 	private ViewPager mViewPager;
 
@@ -16,5 +16,8 @@ public class GalleryCollectionDemoActivity extends FragmentActivity {
 		mDemoCollectionPagerAdapter = new GalleryCollectionPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+
+		final int photoID = getIntent().getIntExtra(GalleryActivity.PHOTO_POSITION, -1);
+		mViewPager.setCurrentItem(photoID);
 	}
 }
