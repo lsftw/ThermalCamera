@@ -4,17 +4,8 @@ import java.io.File;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.AvoidXfermode;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.LightingColorFilter;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,10 +33,14 @@ public class ThermalPhotoActivity extends Activity {
 		temperatureText = (TextView) findViewById(R.id.temperature_value);
 		
 		ImageView imageView = (ImageView) findViewById(R.id.thermal_photo);
-		Bitmap overlaidPhoto = putTempGraidentOverlay(photoPath);
-		imageView.setImageBitmap(overlaidPhoto);
-		//imageView.setImageBitmap(BitmapFactory.decodeFile(photoPath));
-
+		//Bitmap overlaidPhoto = putTempGraidentOverlay(photoPath);
+		//imageView.setImageBitmap(overlaidPhoto);
+		imageView.setImageBitmap(BitmapFactory.decodeFile(photoPath));
+		int overlayColor = getOverlayColor(photoPath);
+		if (overlayColor > -1) {
+			imageView.setColorFilter(overlayColor);
+		}
+		
 		displayTemperature(photoPath);
 		
 		Button deleteButton = (Button) findViewById(R.id.delete_button);
@@ -64,6 +59,24 @@ public class ThermalPhotoActivity extends Activity {
 		});
 	}
 
+	
+	private int getOverlayColor(String photoPath) {
+		String fileName = new File(photoPath).getName();
+		Temperature[] temperatures = TemperatureUtil.loadTemperaturesFromFileName(fileName);
+		if (temperatures != null) {
+			Temperature photoTemp = temperatures[0];
+			Temperature homeTemp = temperatures[1];
+			if (homeTemp.compareTo(photoTemp) < 0){
+				//home temp is cooler than photo temp, make photo overly red
+				return Color.argb(127, 255, 127, 0);
+			} else if (homeTemp.compareTo(photoTemp) > 0){
+				return Color.argb(127, 0, 127, 255);
+			} 
+		}
+		return -1;
+	}
+	//Had memory issues using this method since images are large...
+	/*
 	private Bitmap putTempGraidentOverlay(String photoPath) {
 		Bitmap img = BitmapFactory.decodeFile(photoPath);
 		String fileName = new File(photoPath).getName();
@@ -99,11 +112,14 @@ public class ThermalPhotoActivity extends Activity {
 			p.setXfermode(new AvoidXfermode(overlayColor, 0, AvoidXfermode.Mode.TARGET));
 	        c.drawBitmap(bm1, 0, 0, p);
 	        
+	        img.recycle();
+	        bm1.recycle();
+	        
 	    	return bm2;
 		} 
 		return img; 
 	}
-
+	*/
 	private void displayTemperature(String photoPath) {
 		String fileName = new File(photoPath).getName();
 		Temperature[] temperatures = TemperatureUtil.loadTemperaturesFromFileName(fileName);
